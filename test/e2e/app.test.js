@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { dropCollection } = require('./db');
 const request = require('supertest');
 const app = require('../../lib/app');
@@ -10,12 +11,7 @@ describe('tour pub/sub API', () => {
             title: chance.word(),
             activities: [chance.word()],
             launchDate: chance.date(),
-            stops: [{ 
-                location: {
-                    city: chance.word(), 
-                    zip: chance.natural({ min: 10000, max: 99999 }) 
-                }
-            }]
+            stops: []
         };
     });
     let createdTours;
@@ -28,7 +24,7 @@ describe('tour pub/sub API', () => {
     };
 
     beforeEach(() => {
-        return dropCollection('events');
+        return dropCollection('tours');
     });
 
     beforeEach(() => {
@@ -57,7 +53,7 @@ describe('tour pub/sub API', () => {
                     __v: expect.any(Number),
                     title: 'CircUs',
                     activities: ['hooping', 'souping', 'trouping'],
-                    launchDate: chance.date(),
+                    launchDate: expect.any(String),
                     stops: [{
                         location: {
                             city: 'Portland',
@@ -66,6 +62,21 @@ describe('tour pub/sub API', () => {
                     }]
                 });
             });
-
     });
+
+    it('gets all tours', () => {
+        return request(app)
+            .get('/api/tours')
+            .then(retrievedTours => {
+                createdTours.forEach(createdTour => {
+                    expect(retrievedTours.body).toContainEqual(createdTour);
+                });
+            });
+    });
+
+
+
+
+
+
 });

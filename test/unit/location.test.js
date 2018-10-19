@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createWeatherLocation  = require('../../lib/util/createWeatherLocation');
 
 describe('finds location by zip code', () => {

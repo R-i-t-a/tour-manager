@@ -11,12 +11,8 @@ const getWeather = zip => `http://api.wunderground.com/api/${apiKey}/wu/astronom
 
 function processWeatherData(data) {
     return {
-        temperature: data.hourly_forecast[0].temp.english,
-        condition: data.hourly_forecast[0].condition,
-        windSpeed: data.hourly_forecast[0].wspd.english,
         windDir: data.hourly_forecast[0].wdir.dir,
         sunrise: data.sun_phase.sunrise.hour + ':' + data.sun_phase.sunrise.minute,
-        sunset: data.sun_phase.sunset.hour + ':' + data.sun_phase.sunset.minute,
     };
 }
 
@@ -24,7 +20,6 @@ function processLocationData(data) {
     return {
         city: data.current_observation.display_location.city,
         state: data.current_observation.display_location.state,
-        country: data.current_observation.display_location.country,
         elevation: data.current_observation.display_location.elevation
     };
 }
