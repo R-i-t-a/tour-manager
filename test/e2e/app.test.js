@@ -74,10 +74,12 @@ describe('tour pub/sub API', () => {
             });
     });
 
-
-
-
-
-
+    it('gets all tours by id', () => {
+        return request(app)
+            .get(`/api/tours/${createdTours[0]._id}`)
+            .then(res => {
+                expect(res.body).toEqual({ ...createdTours[0], __v: expect.any(Number) });
+            });
+    });
 
 });
