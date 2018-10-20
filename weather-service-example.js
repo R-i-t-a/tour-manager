@@ -20,7 +20,8 @@ function processLocationData(data) {
     return {
         city: data.current_observation.display_location.city,
         state: data.current_observation.display_location.state,
-        elevation: data.current_observation.display_location.elevation
+        elevation: data.current_observation.display_location.elevation,
+        zip: data.current_observation.display_location.zip
     };
 }
 

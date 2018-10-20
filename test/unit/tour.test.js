@@ -5,21 +5,22 @@ const chance = new Chance();
 
 describe('Tours model', () => {
     it('validates a good model', () => {
+        const stop = { 
+            location: {
+                city: chance.word(), 
+                zip: chance.natural({ min: 10000, max: 99999 }) 
+            }
+        };
         const data = {
             title: chance.word(),
             activities: [chance.word()],
             launchDate: chance.date(),
-            stops: [{ 
-                location: {
-                    city: chance.word(), 
-                    zip: chance.natural({ min: 10000, max: 99999 }) 
-                }
-            }]
+            stops: [stop]
         };
 
         const tour = new Tour(data);
         const jsonTour = tour.toJSON();
-        expect(jsonTour).toEqual({ ...data, _id: expect.any(Object) });
+        expect(jsonTour).toEqual({ ...data, _id: expect.any(Object), stops: [{ ...stop, _id: expect.any(Object) }] });
     });
 
     it('title is required', () => {

@@ -31,7 +31,7 @@ describe('finds location by zip code', () => {
 
         const next = err => {
             expect(err).toBeUndefined;
-            expect(req.body).toEqual(weatherLocation);
+            expect(req.location).toEqual(weatherLocation);
             done();
         };
         middleware(req, null, next);

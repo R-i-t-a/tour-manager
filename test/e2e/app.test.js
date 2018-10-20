@@ -55,6 +55,7 @@ describe('tour pub/sub API', () => {
                     activities: ['hooping', 'souping', 'trouping'],
                     launchDate: expect.any(String),
                     stops: [{
+                        _id: expect.any(String),
                         location: {
                             city: 'Portland',
                             zip: 97212
@@ -81,5 +82,43 @@ describe('tour pub/sub API', () => {
                 expect(res.body).toEqual({ ...createdTours[0], __v: expect.any(Number) });
             });
     });
+
+    it('posts a stop to a tour', () => {
+        return request(app)
+            .post(`/api/tours/${createdTours[0]._id}/stops`)
+            .send({ zip: 21403 })
+            .then(res => {
+                expect(res.body.stops).toEqual(
+                    [{
+                        _id: expect.any(String),
+                        location: {
+                            city: 'Annapolis',
+                            state: 'MD',
+                            zip: 21403
+                        },
+                        weather: {
+                            windDir: expect.any(String),
+                            sunrise: expect.any(String)
+                        }
+
+                    }]
+                );
+            });
+    });
+
+    it('removes a stop', () => {
+        return request(app)
+            .post(`/api/tours/${createdTours[0]._id}/stops`)
+            .send({ zip: 97232 })
+            .then(tourRes=> {
+                return request(app)
+                    .delete(`/api/tours/${tourRes.body._id}/stops/${tourRes.body.stops._id}`)
+                    .then(res => {
+                        expect(res.body).toEqual(createdTours[0]);
+                    }); 
+            });     
+    });
+
+    // it('updates attendance')
 
 });
