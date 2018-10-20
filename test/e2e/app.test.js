@@ -119,6 +119,19 @@ describe('tour pub/sub API', () => {
             });     
     });
 
-    // it('updates attendance')
+    it('updates attendance', () => {
+        return request(app)
+            .post(`/api/tours/${createdTours[0]._id}/stops`)
+            .send({ zip: 97232 })
+            .then(tourRes => {
+                return request(app)
+                    .put(`/api/tours/${tourRes.body._id}/stops/${tourRes.body.stops[0]._id}/attendance`)
+                    .send({ attendance: 10000000 })
+                    .then(res => {
+                        expect(res.body.stops[0].attendance).toEqual(10000000);
+                    });
+            });
+
+    });
 
 });
